@@ -8,20 +8,27 @@ X1 = np.array([0, 0, 0, 1, 1, 2, 2, 2])
 X2 = np.array([1.5, 2.5, 3.5, 1.5, 3.5, 1.5, 2.5, 2.5])
 Y = np.array([2.3, 4.3, 1.9, 4.8, 4.8, 6.3, 6.3, 7.2])
 
-
+# Створення матриці ознак
 X = np.column_stack((np.ones(len(X1)), X1, X2))
 
-
+# Знаходження коефіцієнтів МНК
 coefficients = np.linalg.lstsq(X, Y, rcond=None)[0]
 a0, a1, a2 = coefficients
+
+# Виведення коефіцієнтів
+print(f"Методом найменших квадратів знайшла рівняння: y = a_0 + a_1 * x1 + a_2 * x2")
+print(f"a_0  = {a0:.6f},")
+print(f"a_1  = {a1:.6f},")
+print(f"a_2  = {a2:.6f}")
 
 # Функція для прогнозування
 def predict(x1, x2):
     return a0 + a1 * x1 + a2 * x2
 
-
-y_pred = predict(1.5, 3)
-print(f"Значення функції в точці (1.5, 3): {y_pred:.4f}")
+# Обчислення значення функції в заданій точці
+x1_test, x2_test = 1.5, 3
+y_pred = predict(x1_test, x2_test)
+print(f"Значення функції у точці (x1={x1_test}, x2={x2_test}): {y_pred:.6f}")
 
 # Побудова графіка
 x1_range = np.linspace(min(X1), max(X1), 10)
@@ -39,7 +46,7 @@ ax.set_zlabel('y')
 ax.set_title('Модель лінійної регресії')
 plt.show()
 
-
+# Обчислення R^2
 y_pred_all = predict(X1, X2)
 R2 = r2_score(Y, y_pred_all)
-print(f'Коефіцієнт детермінації R^2: {R2:.4f}')
+print(f'Коефіцієнт детермінації R^2: {R2:.6f}')
